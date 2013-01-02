@@ -45,7 +45,7 @@
     <!--p><div><br>&nbsp;<br></div></p-->
     </div>
 <?php
- $opcion = $_GET['opcion'];
+ $opcion = (isset($_GET['opcion'])) ? $_GET['opcion'] : 0;
  if ($opcion == 2){
 ?>
     <div class="page-header" align="center">

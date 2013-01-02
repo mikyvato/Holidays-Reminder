@@ -8,8 +8,8 @@
 					   '4'=>'alert alert-block');
 ?>
 <div class="row"> 
-
-  <div class="span6 offset5"> 
+    <div class="span5">&nbsp;</div>
+  <div class="span5"> 
       <spam class="close" data-dismiss="alert">&times;&nbsp;</spam>
 	<div align="center" class="<? echo $alert[$_GET['resultado']];?>">  
     	<p>

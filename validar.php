@@ -18,7 +18,13 @@ $sql .= " usuario.UsuUsuario = '$usuario' AND usuario.UsuPass = '$clave' AND usu
 $usuario = sql_get($sql);
 //---- USUARIO Existe !!!
 if ($usuario){
-    echo "OK";
+    //-- Inicializo las variables de Session
+    $_SESSION['AUTENTICADO']=1;
+    $_SESSION['horainiciosesion']=time();
+    $_SESSION['usuario']=$usuario['UsuUsuario'];
+    
+    //-- Redirecciono a la web de inicio
+    header("Location: clientes.php");
 }
 else{
     header("Location: index.php?resultado=1&mostrar=1");
