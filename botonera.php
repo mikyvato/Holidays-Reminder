@@ -3,7 +3,7 @@ session_start();
 //include 'seguridad.php';
 //---- Autenticado 
 if ($_SESSION['AUTENTICADO'] != 1)
-    header("Location: login.php");
+    header("Location: index.php");
 $atajo = (isset($_GET['atajo']))?$_GET['atajo']:0;
 ?>
 

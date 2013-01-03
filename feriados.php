@@ -3,12 +3,13 @@
 <head>
 <link href="css/bootstrap.css" rel="stylesheet">
 <LINK REL="Shortcut Icon" HREF="img/03.png">
-<title>Gesti&oacute;n de Clientes</title>
+<title>Gesti&oacute;n de Feriados</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 <body>
     <?php
     include 'botonera.php';
+    include 'funciones.php'
     ?>
     
     <!-------------------Encabezado------------------>
@@ -18,16 +19,15 @@
     </div>
     <div class="page-header" align="center">
         <p>
-        <h1>Administraci&oacute;n de Clientes</h1>
+        <h1>Administraci&oacute;n de Feriados</h1>
         </p>
         <?php
         include 'funciones_db.php';
         include 'mensajes_constantes.php';
         include 'mensajes.php';
         
-        $IdUsuario = $_SESSION['idUsuarios'];
-        
         $usuUsuario = (isset($_REQUEST['usuUsuario'])) ? $_REQUEST['usuUsuario'] : '';
+        $IdUsuario = $_SESSION['idUsuarios'];
         ?>
     </div>
     
@@ -37,7 +37,7 @@
             <form class="well form-inline" action="clientes.php" method="post">
                 <fieldset>
                     <div class="control-group">
-                        <input type="text" value="<? echo $usuUsuario;?>" name="usuUsuario" class="input-large" placeholder="Ingrese el nombre del Cliente">
+                        <input type="text" value="<? echo $usuUsuario;?>" name="usuUsuario" class="input-large" placeholder="Ingrese el nombre del Feriado">
                         <button type="submit" class="btn btn-success"><i class="icon-search icon-white"></i> Buscar</button> 
                         <input type="hidden" name="atajo" value="<?php echo $atajo;?>" >
                     </div>
@@ -48,24 +48,22 @@
     
     <div class="row-fluid offset2">
         <div class="span8 well">
-            <p><a href="nuevoCliente.php?atajo=1" class="btn btn-inverse"><i class="icon-plus-sign icon-white"></i> Nuevo Cliente </a></p>
+            <p><a href="nuevoFeriado.php?atajo=2" class="btn btn-inverse"><i class="icon-plus-sign icon-white"></i> Nuevo Feriado </a></p>
             <table class="table table-striped table-bordered table-condensed">
                 <thead>
                     <tr>
                         <td>ID</td>
                         <td>Nombre</td>
-                        <td>email</td>
-                        <td>Pa&iacute;s</td>
-                        <td>Pravincia</td>
+                        <td>Fecha</td>
+                        <td>D&iacute;as</td>
                         <td colspan="2">Acciones</td>
                     </tr>
                 </thead>
                 <?php
                 //-- Obtengo la lista de clientes --//
-                $sql = " SELECT * FROM cliente as cli";
-                $sql .= " LEFT JOIN provincia as pro on pro.idProvincias = cli.provincia_idProvincias ";
-                $sql .= " LEFT JOIN pais as pa on pa.idPais = cli.provincia_Pais_idPais ";
-                $sql .= " WHERE cli.CliNombre like '%$usuUsuario%' AND Usuarios_idUsuarios = $IdUsuario";
+                $sql = " SELECT * FROM feriado ";
+                $sql .= " WHERE feriadoNombre like '%$usuUsuario%'";
+                $sql .= " AND Usuarios_idUsuarios = $IdUsuario ";
                 $valor = sql_arreglo($sql);
                 if (!$valor){
                     echo "<tr> <td colspan=6 aling=\"center\"><div align=\"center\"> No se encontraron Registros !</div> </td></tr>";
@@ -73,7 +71,7 @@
                 else{
                     //-- Cuerpo de la Tabla --//
                     foreach ($valor as $id=>$dato){
-                        if ($dato['CliHabilitado'] == 0){  
+                        if ($dato['FerHabilitado'] == 0){  
                             $estado = 1;
                             $icono = "icon-ok";
                         }
@@ -83,21 +81,21 @@
                         }
                     ?>
                 <tr>
-                    <td><?php echo $dato['idClientes'];?></td>
-                    <td><?php echo $dato['CliNombre'];?></td>
-                    <td><?php echo $dato['CliMail'];?></td>
-                    <td><?php echo $dato['PaisNombre'];?></td>
-                    <td><?php echo $dato['ProvNombre'];?></td>
+                    <td><?php echo $dato['idFeriados'];?></td>
+                    <td><?php echo $dato['FeriadoNombre'];?></td>
+                    <td><?php echo fecha_hora_normal($dato['FeriadoFecha']);?></td>
+                    <td><?php echo $dato['FeriadoDias'];?></td>
+                    
                     <td>
                     <div align="center">
-                        <a href="nuevoCliente.php?idClientes=<?php echo $dato['idClientes']."&atajo=".$atajo;?>">
+                        <a href="nuevoFeriado.php?idFeriados=<?php echo $dato['idFeriados']."&atajo=".$atajo;?>">
                             <i class="icon-pencil" title="Editar Datos" alt="Editar Datos"></i>
                         </a>
                     </div>
                     </td>
                     <td>
                         <div align="center">
-                            <a href="ABM_Clientes.php?opcion=3&atajo=<?php echo $atajo;?>&estado=<?php echo $estado;?>&idClientes=<?php echo $dato['idClientes'];?>" class="the-icons">
+                            <a href="ABM_Feriados.php?opcion=3&atajo=<?php echo $atajo;?>&estado=<?php echo $estado;?>&idFeriados=<?php echo $dato['idFeriados'];?>" class="the-icons">
                                 <i class="<?php echo $icono;?>" title="Borrar Datos" alt="Borrar Datos"></i>
                             </a>
                         </div>

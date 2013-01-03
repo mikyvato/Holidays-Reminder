@@ -48,6 +48,29 @@
     include 'funciones_db.php';
     include 'mensajes_constantes.php';
     include 'mensajes.php';
+    
+    $idUsuarios = (isset($_REQUEST['idUsuarios'])) ? $_REQUEST['idUsuarios'] : 0;
+    if ($idUsuarios > 0){
+        $sql = "SELECT * FROM usuario WHERE idUsuarios = $idUsuarios ";
+        $arreglo = sql_get($sql);
+        
+        $usuNombre = $arreglo['UsuNombre'];
+        $idPais = $arreglo['Provincias_Pais_idPais'];
+        $idProvincias = $arreglo['Provincias_idProvincias'];
+        $usuMail = $arreglo['UsuMail'];
+        $usuPass = $arreglo['UsuPass'];
+        $usuUsuario = $arreglo['UsuUsuario'];
+        $opcion = 2;
+    }
+    else{
+        $usuNombre = '';
+        $idPais = '';
+        $idProvincias = '';
+        $usuMail = '';
+        $usuPass = '';
+        $usuUsuario = '';
+        $opcion = 1;
+    }
     ?>
 </div>
 <div class="page-header" align="center">
@@ -74,7 +97,7 @@
                 <label class="control-label">Nombre</label>
                 <div class="controls docs-input-sizes">
                     <p>
-                      <input name="usuNombre" id="nombre" type="text" class="span3 text" placeholder="Nombre del Usuario" required>
+                      <input name="usuNombre" value="<?php echo $usuNombre; ?>" id="nombre" type="text" class="span3 text" maxlength="120" placeholder="Nombre del Usuario" required>
                       <i class="icon-flag"></i>
                     </p>
                 </div>
@@ -89,7 +112,11 @@
                             $pais = sql_arreglo($pro);
                             if ($pais){
                                 foreach ($pais as $valorPro){
-                                    echo "<option value=\"".$valorPro['idPais']."\">".$valorPro['PaisNombre']."</option>";
+                                    if ($valorPro['idPais'] == $idPais)
+                                        $select = "selected";
+                                    else
+                                        $select = '';
+                                    echo "<option value=\"".$valorPro['idPais']."\" $select>".$valorPro['PaisNombre']."</option>";
                                 }
                             }
                             ?>
@@ -104,11 +131,17 @@
                         <select name="idProvincias" id="provincia" class="text">
                             <option value="0"> Seleccione una Provincia </option>
                             <?php 
-                            $pro = "SELECT * FROM `provincia` WHERE `ProvHabilitado` = 1 ";
-                            $Provincia = sql_arreglo($pro);
-                            if ($Provincia){
-                                foreach ($Provincia as $valorPro){
-                                    echo "<option value=\"".$valorPro['idProvincias']."\">".$valorPro['ProvNombre']."</option>";
+                            if ($opcion == 2){
+                                $pro = "SELECT * FROM `provincia` WHERE `ProvHabilitado` = 1 ";
+                                $Provincia = sql_arreglo($pro);
+                                if ($Provincia){
+                                    foreach ($Provincia as $valorPro){
+                                        if ($valorPro['idProvincias']==$idProvincias)
+                                            $select = "selected";
+                                        else
+                                            $select = '';
+                                        echo "<option value=\"".$valorPro['idProvincias']."\" $select>".$valorPro['ProvNombre']."</option>";
+                                    }
                                 }
                             }
                             ?>
@@ -120,14 +153,14 @@
                 <label class="control-label">e-mail</label>
                 <div class="controls docs-input-sizes">
                    <p>
-                      <input name="usuMail" type="text" pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$" class="span3 text" id="mail" placeholder="e-mail de Contacto" title="Se requiere un email valido" required><i class="icon-flag"></i>
+                      <input name="usuMail" value="<?php echo $usuMail; ?>" type="text" maxlength="120" pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$" class="span3 text" id="mail" placeholder="e-mail de Contacto" title="Se requiere un email valido" required><i class="icon-flag"></i>
                    </p>
                 </div>
                 
                 <label class="control-label">Usuario</label>
               <div class="controls docs-input-sizes">
                 <p>
-                    <input name="usuUsuario" id="usuUsuario" type="text" class="text span3" placeholder="usuario de Logueo" required>
+                    <input name="usuUsuario" value="<?php echo $usuUsuario; ?>" id="usuUsuario" maxlength="30" type="text" class="text span3" placeholder="usuario de Logueo" required>
                   <i class="icon-flag"></i>
                 </p>
               </div>
@@ -135,7 +168,7 @@
               <label class="control-label">Contrase&ncaron;a</label>
               <div class="controls docs-input-sizes">
                 <p>
-                    <input name="usuPass" id="usuPass" type="password" class="span3 text" placeholder="password" required>
+                    <input name="usuPass" id="usuPass" value="<?php echo $usuPass; ?>" type="password" maxlength="30" class="span3 text" placeholder="password" required>
                   <i class="icon-flag"></i>
                 </p>
               </div>
@@ -143,7 +176,7 @@
               <label class="control-label">Repita Contrase&ncaron;a</label>
               <div class="controls docs-input-sizes">
                 <p>
-                    <input name="usuPass2" id="usuPass2" type="password" class="span3 text" placeholder="password" required>
+                    <input name="usuPass2" id="usuPass2" value="<?php echo $usuPass; ?>" type="password" maxlength="30" class="span3 text" placeholder="password" required>
                   <i class="icon-flag"></i>
                 </p>
               </div>
@@ -158,7 +191,14 @@
                   <i class="icon-arrow-right icon-white"></i> Reg&iacute;strate
                 </button>
               </div>
-              <input type="hidden" name="opcion" value="1" >
+              <?php 
+              if ($opcion == 2)
+                echo "<input type=\"hidden\" name=\"opcion\" value=\"4\" >";  
+              else
+                echo "<input type=\"hidden\" name=\"opcion\" value=\"1\" >";    
+              
+              echo "<input type=\"hidden\" name=\"idUsuarios\" value=\"$idUsuarios\" >";  
+              ?>    
             </div>
         </form>    
         
@@ -172,11 +212,15 @@
     <!--script type="text/javascript" src="js/validity/jQuery.validity.min.js"></script-->
     
      <!-- Analytics
-    ================================================== -->
-    
+    ================================================== -->  
+
         <script type="text/javascript">
             $(function() { 
                 $(document).ready(function () {
+                    $("#pais").change(function(){
+                        //si estas trabajando con php recorda cambiar .asp por .php
+                        $.post("carga_select2.php",{ id:$(this).val() },function(data){$("#provincia").html(data);})
+                     });
                     var emailreg = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/;
                     $("#formulario").submit(function (){
                     $(".error").remove();

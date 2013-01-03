@@ -22,9 +22,10 @@ if ($usuario){
     $_SESSION['AUTENTICADO']=1;
     $_SESSION['horainiciosesion']=time();
     $_SESSION['usuario']=$usuario['UsuUsuario'];
+    $_SESSION['idUsuarios']=$usuario['idUsuarios'];
     
     //-- Redirecciono a la web de inicio
-    header("Location: clientes.php");
+    header("Location: clientes.php?atajo=1");
 }
 else{
     header("Location: index.php?resultado=1&mostrar=1");
