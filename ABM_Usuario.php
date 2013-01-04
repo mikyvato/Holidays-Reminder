@@ -38,7 +38,7 @@ if ($opcion==1){
 
         $mensaje = " <h1> Confirmación de mail </h1> <br><br>";
         $mensaje .= " $usuNombre, te damos la bienvenida y agradecemos tu confianza, ya estas a un solo paso de poder usar nuestro servicio. <br>";
-        $mensaje .= " Para poder activar tu cuenta te pedimos que des un click <a href=\"http://holidaysreminder.6te.net/ABM_Usuario.php?idUsuarios=$idUsuarios?opcion=2\">aquí</a> <br>";
+        $mensaje .= " Para poder activar tu cuenta te pedimos que des un click <a href=\"http://holidaysreminder.6te.net/ABM_Usuario.php?idUsuarios=$idUsuarios&opcion=2\">aquí</a> <br>";
         $mensaje .= " <br><br>";
         $mensaje .= " <br><br>";
         $mensaje .= " <br><br>";
